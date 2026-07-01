@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>北海道 & 東京 · 14日夏旅</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;700&family=Shippori+Mincho:wght@400;500;700&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+TC:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sakura: #f2c4ce;
+    --blush: #e8a0b0;
+    --deep-rose: #c07080;
+    --washi: #faf6f0;
+    --cream: #f5ede2;
+    --ink: #2a1f1a;
+    --ink-light: #5a4a42;
+    --moss: #7a8c6e;
+    --moss-light: #a8b89a;
+    --indigo: #4a5a7a;
+    --indigo-light: #8090b0;
+    --gold: #c8a96e;
+    --gold-light: #e8d0a0;
+    --border: rgba(192,112,128,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Serif TC', 'Noto Sans TC', serif;
+    background-color: var(--washi);
+    color: var(--ink);
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ─── Noise texture overlay ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: linear-gradient(160deg, #fde8ee 0%, #f8f0e8 40%, #e8eef8 100%);
+  }
+
+  .hero-bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .hero-bg-circle:nth-child(1) {
+    width: 700px; height: 700px;
+    top: -200px; right: -150px;
+    background: radial-gradient(circle, rgba(242,196,206,0.35) 0%, transparent 70%);
+    animation: float1 8s ease-in-out infinite;
+  }
+  .hero-bg-circle:nth-child(2) {
+    width: 500px; height: 500px;
+    bottom: -100px; left: -100px;
+    background: radial-gradient(circle, rgba(74,90,122,0.12) 0%, transparent 70%);
+    animation: float2 10s ease-in-out infinite;
+  }
+  .hero-bg-circle:nth-child(3) {
+    width: 300px; height: 300px;
+    top: 30%; left: 10%;
+    background: radial-gradient(circle, rgba(200,169,110,0.15) 0%, transparent 70%);
+    animation: float1 12s ease-in-out infinite reverse;
+  }
+
+  @keyframes float1 {
+    0%,100% { transform: translate(0,0); }
+    50% { transform: translate(20px, -30px); }
+  }
+  @keyframes float2 {
+    0%,100% { transform: translate(0,0); }
+    50% { transform: translate(-15px, 20px); }
+  }
+
+  /* Falling petals */
+  .petals-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .petal {
+    position: absolute;
+    top: -20px;
+    font-size: 18px;
+    opacity: 0;
+    animation: falling linear infinite;
+  }
+  @keyframes falling {
+    0% { opacity: 0; transform: translateY(0) rotate(0deg) scale(0.8); }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.3; }
+    100% { opacity: 0; transform: translateY(110vh) rotate(360deg) scale(1.1); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.5em;
+    color: var(--deep-rose);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.5s forwards;
+  }
+  .hero-title span {
+    color: var(--deep-rose);
+  }
+
+  .hero-subtitle {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    font-weight: 300;
+    color: var(--indigo);
+    letter-spacing: 0.3em;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.7s forwards;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 2.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.9s forwards;
+  }
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .hero-meta-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--ink-light);
+  }
+  .hero-meta-value {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .hero-divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--deep-rose), transparent);
+    margin: 2rem auto;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.1s forwards;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.5s forwards;
+  }
+  .scroll-hint span {
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    color: var(--ink-light);
+  }
+  .scroll-arrow {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--deep-rose), transparent);
+    animation: scrollDown 1.5s ease-in-out infinite;
+  }
+  @keyframes scrollDown {
+    0%,100% { transform: scaleY(1); opacity: 1; }
+    50% { transform: scaleY(0.6); opacity: 0.5; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── REGION TABS ─── */
+  .region-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(250,246,240,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+  }
+  .region-tabs {
+    display: flex;
+    gap: 0;
+    max-width: 900px;
+    margin: 0 auto;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .region-tabs::-webkit-scrollbar { display: none; }
+  .region-tab {
+    padding: 1rem 1.5rem;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    color: var(--ink-light);
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s;
+    white-space: nowrap;
+    text-decoration: none;
+    display: block;
+  }
+  .region-tab:hover { color: var(--deep-rose); }
+  .region-tab.active {
+    color: var(--deep-rose);
+    border-bottom-color: var(--deep-rose);
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  .main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 6rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── REGION HEADER ─── */
+  .region-section {
+    margin-bottom: 5rem;
+  }
+
+  .region-header {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .region-header::before {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: var(--deep-rose);
+  }
+  .region-number {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 4rem;
+    font-weight: 400;
+    color: var(--sakura);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .region-info {}
+  .region-kana {
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    color: var(--deep-rose);
+    margin-bottom: 0.3rem;
+  }
+  .region-name {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .region-dates {
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: var(--ink-light);
+    margin-top: 0.4rem;
+  }
+  .region-badge {
+    margin-left: auto;
+    flex-shrink: 0;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    color: var(--ink-light);
+    background: white;
+  }
+
+  /* ─── DAY CARD ─── */
+  .day-card {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 0;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .day-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .day-date-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 1.5rem;
+    position: relative;
+  }
+  .day-date-col::after {
+    content: '';
+    position: absolute;
+    top: 3.5rem;
+    bottom: -1.5rem;
+    left: 50%;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--border) 80%, transparent);
+  }
+  .day-card:last-child .day-date-col::after { display: none; }
+
+  .day-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s;
+  }
+  .day-card:hover .day-dot { transform: scale(1.1); }
+
+  .day-dot.hokkaido {
+    background: linear-gradient(135deg, #f2c4ce, #e8a0b0);
+    color: white;
+    box-shadow: 0 4px 12px rgba(232,160,176,0.4);
+  }
+  .day-dot.tokyo {
+    background: linear-gradient(135deg, #8090b0, #4a5a7a);
+    color: white;
+    box-shadow: 0 4px 12px rgba(74,90,122,0.3);
+  }
+  .day-dot.return {
+    background: linear-gradient(135deg, #c8a96e, #a08050);
+    color: white;
+    box-shadow: 0 4px 12px rgba(200,169,110,0.4);
+  }
+
+  .day-date-label {
+    margin-top: 0.4rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    color: var(--ink-light);
+    text-align: center;
+  }
+  .day-date-weekday {
+    font-size: 0.58rem;
+    color: var(--deep-rose);
+    margin-top: 0.1rem;
+  }
+
+  .day-body {
+    padding: 1.2rem 1.5rem 1.5rem;
+    background: white;
+    border-radius: 12px;
+    margin-left: 1rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 20px rgba(42,31,26,0.04);
+    transition: box-shadow 0.3s, transform 0.3s;
+  }
+  .day-card:hover .day-body {
+    box-shadow: 0 8px 32px rgba(42,31,26,0.09);
+    transform: translateY(-2px);
+  }
+
+  .day-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .day-number {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--deep-rose);
+  }
+  .day-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-top: 0.2rem;
+    line-height: 1.4;
+  }
+
+  .day-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+  }
+  .tag {
+    padding: 0.15rem 0.6rem;
+    border-radius: 100px;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .tag-transport {
+    background: rgba(74,90,122,0.08);
+    color: var(--indigo);
+    border: 1px solid rgba(74,90,122,0.15);
+  }
+  .tag-stay {
+    background: rgba(200,169,110,0.1);
+    color: #8a6a30;
+    border: 1px solid rgba(200,169,110,0.2);
+  }
+  .tag-event {
+    background: rgba(192,112,128,0.08);
+    color: var(--deep-rose);
+    border: 1px solid rgba(192,112,128,0.15);
+  }
+
+  /* Timeline inside card */
+  .timeline {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .tl-item {
+    display: flex;
+    gap: 0.8rem;
+    padding: 0.5rem 0;
+    position: relative;
+  }
+  .tl-item + .tl-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(192,112,128,0.1), transparent);
+  }
+  .tl-time {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 0.68rem;
+    color: var(--deep-rose);
+    min-width: 58px;
+    padding-top: 0.1rem;
+    letter-spacing: 0.03em;
+    flex-shrink: 0;
+  }
+  .tl-content {
+    font-size: 0.82rem;
+    color: var(--ink-light);
+    line-height: 1.65;
+  }
+  .tl-content strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .tl-icon {
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+  }
+
+  .day-summary {
+    font-size: 0.82rem;
+    color: var(--ink-light);
+    line-height: 1.75;
+  }
+
+  /* Special highlight box */
+  .highlight-box {
+    margin-top: 0.8rem;
+    padding: 0.8rem 1rem;
+    background: linear-gradient(135deg, rgba(242,196,206,0.12), rgba(200,169,110,0.08));
+    border-left: 2px solid var(--blush);
+    border-radius: 0 8px 8px 0;
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    line-height: 1.7;
+  }
+  .highlight-box strong {
+    color: var(--deep-rose);
+    font-weight: 500;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center;
+    padding: 3rem 1.5rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+  .footer-divider {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blush), transparent);
+    margin: 0 auto 1.5rem;
+  }
+  .footer-text {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.4em;
+    color: var(--ink-light);
+  }
+  .footer-emoji {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+  }
+
+  /* ─── Section decorative header ─── */
+  .section-deco {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 3.5rem 0 2.5rem;
+  }
+  .section-deco-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+  .section-deco-text {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.5em;
+    color: var(--deep-rose);
+  }
+
+  /* ─── Overview strip ─── */
+  .overview-strip {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 4rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.5rem;
+    box-shadow: 0 2px 20px rgba(42,31,26,0.04);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+  .overview-item {
+    text-align: center;
+  }
+  .overview-icon {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .overview-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--ink-light);
+    margin-bottom: 0.3rem;
+  }
+  .overview-value {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 600px) {
+    .day-card { grid-template-columns: 64px 1fr; }
+    .day-body { padding: 1rem; margin-left: 0.6rem; }
+    .region-number { font-size: 2.8rem; }
+    .overview-strip { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ─── Print / accessibility ─── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .day-card { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-circle"></div>
+  <div class="hero-bg-circle"></div>
+  <div class="hero-bg-circle"></div>
+
+  <div class="petals-container" id="petals"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">2025 · Summer Journey</p>
+    <h1 class="hero-title">北海道<span>·</span>東京<br>十四日夏旅</h1>
+    <p class="hero-subtitle">北の大地から東の都へ</p>
+    <div class="hero-divider"></div>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">出發日期</span>
+        <span class="hero-meta-value">7月25日</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">返程日期</span>
+        <span class="hero-meta-value">8月8日</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">旅遊天數</span>
+        <span class="hero-meta-value">14 天</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">出發城市</span>
+        <span class="hero-meta-value">高 雄</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>SCROLL</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="region-nav">
+  <div class="region-tabs">
+    <a href="#hokkaido" class="region-tab active">🌸 北海道</a>
+    <a href="#tokyo" class="region-tab">🗼 東京</a>
+    <a href="#day11" class="region-tab">🎆 熱海</a>
+    <a href="#day12" class="region-tab">⚓ 橫濱</a>
+    <a href="#day13" class="region-tab">⛩ 高尾山</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- Overview -->
+  <div class="overview-strip">
+    <div class="overview-item">
+      <span class="overview-icon">✈️</span>
+      <div class="overview-label">航空公司</div>
+      <div class="overview-value">IT · GK 虎航</div>
+    </div>
+    <div class="overview-item">
+      <span class="overview-icon">🏨</span>
+      <div class="overview-label">北海道住宿</div>
+      <div class="overview-value">京王 Prelia</div>
+    </div>
+    <div class="overview-item">
+      <span class="overview-icon">♨️</span>
+      <div class="overview-label">溫泉之宿</div>
+      <div class="overview-value">定山溪 Tsuruga</div>
+    </div>
+    <div class="overview-item">
+      <span class="overview-icon">🏠</span>
+      <div class="overview-label">東京住宿</div>
+      <div class="overview-value">Minn Ueno</div>
+    </div>
+    <div class="overview-item">
+      <span class="overview-icon">🎑</span>
+      <div class="overview-label">夏日祭典</div>
+      <div class="overview-value">6 場</div>
+    </div>
+    <div class="overview-item">
+      <span class="overview-icon">🎇</span>
+      <div class="overview-label">花火大會</div>
+      <div class="overview-value">3 場</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ 北海道 ═══════════════════════ -->
+  <section class="region-section" id="hokkaido">
+    <div class="region-header">
+      <div class="region-number">壹</div>
+      <div class="region-info">
+        <div class="region-kana">HOKKAIDO · SAPPORO · OTARU</div>
+        <div class="region-name">北海道</div>
+        <div class="region-dates">7月25日（六）— 8月1日（六）</div>
+      </div>
+      <div class="region-badge">7 NIGHTS</div>
+    </div>
+
+    <!-- Day 1 -->
+    <div class="day-card" data-day="1">
+      <div class="day-date-col">
+        <div class="day-dot hokkaido">D1</div>
+        <div class="day-date-label">7/25</div>
+        <div class="day-date-weekday">六</div>
+      </div>
+      <div class="day-body">
+        <div class="day-header">
+          <div>
+            <div class="day-number">DAY 01</div>
+            <div class="day-title">啟程 · 抵達北海道<br>大通公園啤酒節</div>
+          </div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-transport">✈ IT280 高雄 08:05 → 東京 12:40</span>
+          <span class="tag tag-transport">✈ GK117 東京 16:50 → 新千歲 18:40</span>
+          <span class="tag tag-stay">🏨 京王 Prelia</span>
+        </div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-icon">🌅</div>
+            <div class="tl-time">08:05</div>
+            <div class="tl-content"><strong>IT280 高雄起飛</strong> → 12:40 抵達東京成田機場</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🔄</div>
+            <div class="tl-time">12:40–16:50</div>
+            <div class="tl-content">成田機場候機約 4 小時，辦理國內線登機手續</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">✈️</div>
+            <div class="tl-time">16:50</div>
+            <div class="tl-content"><strong>GK117 東京起飛</strong> → 18:40 抵達新千歲機場</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🚃</div>
+            <div class="tl-time">18:40–19:40</div>
+            <div class="tl-content">搭 <strong>JR 快速 Airport 號</strong>（約 37 分鐘），新千歲機場→札幌站，約 19:20 抵達</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🏨</div>
+            <div class="tl-time">19:30</div>
+            <div class="tl-content"><strong>京王 Prelia</strong> Check-in，放行李稍作整理</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🍺</div>
+            <div class="tl-time">20:00</div>
+            <div class="tl-content">步行前往 <strong>大通公園</strong>，參加夏日啤酒節，感受北海道夏天風情</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 2 -->
+    <div class="day-card" data-day="2">
+      <div class="day-date-col">
+        <div class="day-dot hokkaido">D2</div>
+        <div class="day-date-label">7/26</div>
+        <div class="day-date-weekday">日</div>
+      </div>
+      <div class="day-body">
+        <div class="day-header">
+          <div>
+            <div class="day-number">DAY 02</div>
+            <div class="day-title">小樽潮祭 · 60週年花火大會</div>
+          </div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-transport">🚃 JR快速Airport號</span>
+          <span class="tag tag-stay">🏨 OMO5 Otaru</span>
+          <span class="tag tag-event">🎆 花火大會</span>
+        </div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-icon">🌄</div>
+            <div class="tl-time">08:30–09:15</div>
+            <div class="tl-content">避開人潮，<strong>早鳥出發小樽</strong>（快速 Airport 號或區間快速）</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🧳</div>
+            <div class="tl-time">09:30–10:00</div>
+            <div class="tl-content"><strong>寄放行李與散步</strong>：步行 9 分鐘至 OMO5 小樽寄行李，沿途欣賞舊手宮線鐵道遺跡</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🎵</div>
+            <div class="tl-time">10:00–12:30</div>
+            <div class="tl-content"><strong>音樂盒堂與童話十字路口</strong>：音樂盒堂本館、每 15 分鐘噴氣報時的蒸汽鐘、堺町通散步、北一硝子工藝店</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🦞</div>
+            <div class="tl-time">12:30–14:00</div>
+            <div class="tl-content"><strong>午餐：堺町通美食之旅</strong>：著名海鮮丼，或 LeTAO 本店招牌雙層乳酪蛋糕下午茶</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🏮</div>
+            <div class="tl-time">14:30–16:30</div>
+            <div class="tl-content"><strong>潮祭神輿巡遊</strong>：最後一天「神輿パレード（神轎遊行）」，中央通一帶觀賞傳統抬神轎與舞蹈</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🏨</div>
+            <div class="tl-time">16:30–18:00</div>
+            <div class="tl-content"><strong>OMO5 Check-in 與小憩</strong>：換上輕便服裝，準備迎接晚上的煙火</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🍢</div>
+            <div class="tl-time">18:00–19:30</div>
+            <div class="tl-content"><strong>潮祭屋台美食體驗</strong>：小樽港第 3 號埠頭祭典主會場，數十家屋台（炒麵、章魚燒、烤串）</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🎆</div>
+            <div class="tl-time">19:40–20:30</div>
+            <div class="tl-content"><strong>60 週年大花火大會</strong>：20:00 準時施放，色內埠頭公園發射，第 3 號埠頭主觀賞區</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🌊</div>
+            <div class="tl-time">21:00～</div>
+            <div class="tl-content">人潮散去後拍攝<strong>深夜寧靜小樽運河</strong>，回飯店 OMO5 <strong>大眾澡堂泡湯</strong></div>
+          </div>
+        </div>
+        <div class="highlight-box">
+          ✨ <strong>OMO5 飯店優勢</strong>：位於色內地區，散場後步行 5 分鐘回飯店，完全避開擁擠的 JR 車站人潮！
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 3 -->
+    <div class="day-card" data-day="3">
+      <div class="day-date-col">
+        <div class="day-dot hokkaido">D3</div>
+        <div class="day-date-label">7/27</div>
+        <div class="day-date-weekday">一</div>
+      </div>
+      <div class="day-body">
+        <div class="day-header">
+          <div>
+            <div class="day-number">DAY 03</div>
+            <div class="day-title">小樽三角市場 · 天狗山 · 狸小路狸祭 · 大通音樂祭</div>
+          </div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-transport">🚃 JR快速Airport號</span>
+          <span class="tag tag-stay">🏨 京王 Prelia</span>
+          <span class="tag tag-event">🎑 狸祭</span>
+        </div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-icon">☀️</div>
+            <div class="tl-time">08:00–09:30</div>
+            <div class="tl-content"><strong>OMO5 精緻早餐與復古建築巡禮</strong>：飯店特色早餐，部分館別坐落「舊商工會議所」，餐後可在歷史感建築內拍照</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🚠</div>
+            <div class="tl-time">09:30–11:00</div>
+            <div class="tl-content"><strong>前往天狗山</strong>：搭計程車至天狗山纜車，俯瞰港灣海景與市景（《First Love 初戀》取景地），遊覽後返回車站</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🦀</div>
+            <div class="tl-time">11:00–12:30</div>
+            <div class="tl-content"><strong>三角市場：豪邁海鮮午餐</strong>：辦理退房後步行至 JR 小樽站旁三角市場，自選鮭魚卵、海膽、鱈場蟹腳（推薦瀧波食堂或武田鮮魚店）</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🦝</div>
+            <div class="tl-time">13:00–14:00</div>
+            <div class="tl-content"><strong>返回札幌 · 狸小路商店街</strong>（狸祭期間限定）：從圓山公園站搭地鐵東西線→大通站，步行 5 分鐘，1～7 丁目限定夏日燈飾與巨型狸貓氣球</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🎶</div>
+            <div class="tl-time">16:00</div>
+            <div class="tl-content">返回札幌稍作休息，<strong>大通公園 6 丁目露天音樂 Stage</strong>：露天音樂表演與屋台攤位</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🍛</div>
+            <div class="tl-time">18:30 之後</div>
+            <div class="tl-content"><strong>精緻晚餐</strong>：狸小路 2 丁目附近湯咖哩 GARAKU，或 4 丁目附近 Suage+，亦可前往薄野（Susukino）特色居酒屋</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 4 -->
+    <div class="day-card" data-day="4">
+      <div class="day-date-col">
+        <div class="day-dot hokkaido">D4</div>
+        <div class="day-date-label">7/28</div>
+        <div class="day-date-weekday">二</div>
+      </div>
+      <div class="day-body">
+        <div class="day-header">
+          <div>
+            <div class="day-number">DAY 04</div>
+            <div class="day-title">富良野薰衣草巡禮</div>
+          </div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-transport">🚌 KLOOK 一日團</span>
+          <span class="tag tag-stay">🏨 京王 Prelia</span>
+          <span class="tag tag-event">💜 薰衣草</span>
+        </div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-icon">📍</div>
+            <div class="tl-time">08:10</div>
+            <div class="tl-content">Odori 地鐵站 <strong>31 號出口</strong>集合出發</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🛣️</div>
+            <div class="tl-time">上午</div>
+            <div class="tl-content"><strong>雲霄飛車之路</strong> / <strong>白金青池</strong>（北海道必訪絕景）</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🍈</div>
+            <div class="tl-time">12:00</div>
+            <div class="tl-content"><strong>自助午餐</strong>：哈密瓜放題！</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🌿</div>
+            <div class="tl-time">下午</div>
+            <div class="tl-content"><strong>富田農場</strong> · 四季彩之丘 · HERB GARDEN FURANO</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🏁</div>
+            <div class="tl-time">18:00</div>
+            <div class="tl-content">回到 Odori 地鐵站</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 5 -->
+    <div class="day-card" data-day="5">
+      <div class="day-date-col">
+        <div class="day-dot hokkaido">D5</div>
+        <div class="day-date-label">7/29</div>
+        <div class="day-date-weekday">三</div>
+      </div>
+      <div class="day-body">
+        <div class="day-header">
+          <div>
+            <div class="day-number">DAY 05</div>
+            <div class="day-title">定山溪溫泉 · 森之歌 · NATURE LUMINARA</div>
+          </div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-transport">🚌 河童快線</span>
+          <span class="tag tag-stay">♨️ Jozankei Tsuruga Resort</span>
+          <span class="tag tag-event">✨ 光之步道</span>
+        </div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-icon">🚌</div>
+            <div class="tl-time">12:30</div>
+            <div class="tl-content">札幌車站南口 12 號巴士站搭乘<strong>河童快線（かっぱライナー号）</strong>，需事先預約，車程約 60 分鐘直達定山溪溫泉區</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🍡</div>
+            <div class="tl-time">13:40</div>
+            <div class="tl-content"><strong>坂之上の最中</strong>：翠山亭打造的法式最中甜點（外型像珠寶盒），漫步至旁邊<strong>定山源泉公園</strong>免費足湯，一邊吃甜點一邊暖腳</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🌲</div>
+            <div class="tl-time">15:00</div>
+            <div class="tl-content">Check-in <strong>Jozankei Tsuruga Resort Spa MORI no UTA</strong>：大廳象徵大樹的巨型暖爐，現代音樂環繞。換上飯店服裝先體驗露天溫泉風呂</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🍽️</div>
+            <div class="tl-time">18:00–19:40</div>
+            <div class="tl-content"><strong>頂級「森之歌」森林創意自助晚宴</strong>：北海道在地新鮮蔬菜沙拉吧、主廚現做現切鐵板牛排、手工柴燒窯烤披薩、法式糕點</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">✨</div>
+            <div class="tl-time">20:00–21:15</div>
+            <div class="tl-content"><strong>NATURE LUMINARA</strong>：20:00 從飯店步行出發（約 17 分鐘），進入二見公園散步至二見吊橋，NAKED 團隊打造沉浸式互動光雕，魔幻浪漫</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🎹</div>
+            <div class="tl-time">21:30</div>
+            <div class="tl-content">步行回飯店（約 21:30 抵達），大廳現場豎琴或鋼琴演奏，點一杯北海道地酒，沙發上微醺入夜</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 6 -->
+    <div class="day-card" data-day="6">
+      <div class="day-date-col">
+        <div class="day-dot hokkaido">D6</div>
+        <div class="day-date-label">7/30</div>
+        <div class="day-date-weekday">四</div>
+      </div>
+      <div class="day-body">
+        <div class="day-header">
+          <div>
+            <div class="day-number">DAY 06</div>
+            <div class="day-title">定山溪晨湯 · 白色戀人公園 · 藻岩山夜景</div>
+          </div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-transport">🚌 河童快線</span>
+          <span class="tag tag-stay">🏨 京王 Prelia</span>
+          <span class="tag tag-event">🌃 日本新三大夜景</span>
+        </div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-icon">🌅</div>
+            <div class="tl-time">07:30</div>
+            <div class="tl-content"><strong>清晨翠綠晨沐</strong>：早起再泡一次「晨湯」，清晨空氣配翠綠森林，一天最奢華的甦醒方式</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🥐</div>
+            <div class="tl-time">08:30</div>
+            <div class="tl-content"><strong>元氣滿滿朝食</strong>：現打新鮮蔬果汁與現烤麵包千萬別錯過</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">⛩️</div>
+            <div class="tl-time">10:00–11:00</div>
+            <div class="tl-content"><strong>岩戶觀音堂與二見吊橋</strong>：退房前漫步神祕地底洞窟（33 尊觀音），隨後走到二見吊橋欣賞豐平川溪流與翠綠峽谷</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🚌</div>
+            <div class="tl-time">11:00–12:30</div>
+            <div class="tl-content"><strong>辦理退房，回歸札幌市區</strong>：在「定山溪溫泉東 2 丁目」或「定山溪神社前」搭巴士返回，抵達後 Check-in 或寄放行李、享用午餐</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🍫</div>
+            <div class="tl-time">14:30–17:00</div>
+            <div class="tl-content"><strong>白色戀人觀光工廠</strong>：大通站搭地鐵東西線→宮之澤站步行 7 分鐘，7 月盛夏玫瑰季、巧克力博物館、限定聖代</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🍛</div>
+            <div class="tl-time">17:30–19:00</div>
+            <div class="tl-content"><strong>薄野 / 狸小路晚餐</strong>：宮之澤站搭地鐵東西線回大通站或薄野站，湯咖哩 Suage+（4 丁目）或 GARAKU</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🌃</div>
+            <div class="tl-time">19:15–21:00</div>
+            <div class="tl-content"><strong>藻岩山山頂展望台</strong>（日本新三大夜景）：市電→纜車入口站→免費接駁巴士→兩段纜車登頂。19:20～19:40 Magic Hour 魔幻時刻，360° 夜景，幸福之鐘</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 7 -->
+    <div class="day-card" data-day="7">
+      <div class="day-date-col">
+        <div class="day-dot hokkaido">D7</div>
+        <div class="day-date-label">7/31</div>
+        <div class="day-date-weekday">五</div>
+      </div>
+      <div class="day-body">
+        <div class="day-header">
+          <div>
+            <div class="day-number">DAY 07</div>
+            <div class="day-title">札幌八月祭 · 文青榻榻米 · 盆舞之夜</div>
+          </div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-transport">🚶 市內步行</span>
+          <span class="tag tag-stay">🏨 京王 Prelia</span>
+          <span class="tag tag-event">🏮 八月祭</span>
+        </div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-icon">🏛️</div>
+            <div class="tl-time">10:30–12:30</div>
+            <div class="tl-content"><strong>北海道廳舊本廳舍（紅磚廳舍）與庭園散策</strong>：札幌車站南口步行 5 分鐘，巴洛克建築地標，前庭蓮花池、高聳古樹、盛開夏花</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🍕</div>
+            <div class="tl-time">12:30–14:30</div>
+            <div class="tl-content"><strong>赤れんが テラス 午餐</strong>（緊鄰 AKAPLA 廣場）：鶴雅 Buffet 或 Hokkaido Pizza giocare；餐後至 5 樓展望迴廊免費俯瞰紅磚廳舍與銀杏大道</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🎪</div>
+            <div class="tl-time">15:00–18:00</div>
+            <div class="tl-content"><strong>札幌八月祭開幕！</strong> 北 3 条廣場「AKAPLA」：巨型榻榻米鋪設，文青限定屋台全開（手作甜點、精釀啤酒、烤肉輕食），脫鞋坐榻榻米吹夏風</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🥁</div>
+            <div class="tl-time">18:00–21:00</div>
+            <div class="tl-content"><strong>祭典最高潮！現代音頭與現場演奏</strong>：燈籠與霓虹點亮，生演奏樂團登台，爵士打擊樂 × 傳統太鼓，與上班族、文青、各國旅客同跳盆舞（Bon Odori）。晚餐直接在屋台解決</div>
+          </div>
+        </div>
+        <div class="highlight-box">
+          💡 全程不需門票，步行 5 分鐘即可抵達！白天優雅林蔭，入夜後化身狂歡音樂祭，是北海道最難忘的在地體驗。
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════ 東京 ═══════════════════════ -->
+  <section class="region-section" id="tokyo">
+    <div class="region-header">
+      <div class="region-number">貳</div>
+      <div class="region-info">
+        <div class="region-kana">TOKYO · UENO · ASAKUSA</div>
+        <div class="region-name">東 京</div>
+        <div class="region-dates">8月1日（六）— 8月8日（六）</div>
+      </div>
+      <div class="region-badge">7 NIGHTS</div>
+    </div>
+
+    <!-- Day 8 -->
+    <div class="day-card" data-day="8">
+      <div class="day-date-col">
+        <div class="day-dot tokyo">D8</div>
+        <div class="day-date-label">8/1</div>
+        <div class="day-date-weekday">六</div>
+      </div>
+      <div class="day-body">
+        <div class="day-header">
+          <div>
+            <div class="day-number">DAY 08</div>
+            <div class="day-title">飛抵東京 · 家人會合 · 築地本願寺盆舞</div>
+          </div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-transport">✈ GK126 札幌→東京 11:25</span>
+          <span class="tag tag-stay">🏠 Minn Ueno</span>
+          <span class="tag tag-event">🪘 築地盆踴</span>
+        </div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-icon">✈️</div>
+            <div class="tl-time">09:30</div>
+            <div class="tl-content">新千歲機場報到，GK126 11:25 起飛→13:05 抵達成田 T3</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🤝</div>
+            <div class="tl-time">13:45</div>
+            <div class="tl-content">前往 T2 國際線抵達大廳，<strong>與家人會合</strong>（家人班機 12:40 降落）</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🚐</div>
+            <div class="tl-time">14:00</div>
+            <div class="tl-content"><strong>14 人座包車</strong>接送（KLOOK 訂單：JEK064276）</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🏠</div>
+            <div class="tl-time">15:00</div>
+            <div class="tl-content">抵達 <strong>Minn Ueno</strong>（寬敞公寓式飯店）放行李休息</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🍢</div>
+            <div class="tl-time">16:00</div>
+            <div class="tl-content"><strong>築地場外市場</strong>下午茶：玉子燒（丸武）· 抹茶冰淇淋</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🪘</div>
+            <div class="tl-time">18:00</div>
+            <div class="tl-content"><strong>築地本願寺納涼盆踴大會</strong>：東京最美味屋台（築地名店親自擺攤） · 千人齊跳盆舞</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 9 -->
+    <div class="day-card" data-day="9">
+      <div class="day-date-col">
+        <div class="day-dot tokyo">D9</div>
+        <div class="day-date-label">8/2</div>
+        <div class="day-date-weekday">日</div>
+      </div>
+      <div class="day-body">
+        <div class="day-header">
+          <div>
+            <div class="day-number">DAY 09</div>
+            <div class="day-title">阿美橫町採買 · 淺草浴衣 · 台場鋼彈</div>
+          </div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-transport">🚇 市內地鐵</span>
+          <span class="tag tag-stay">🏠 Minn Ueno</span>
+        </div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-icon">🛒</div>
+            <div class="tl-time">09:30–14:30</div>
+            <div class="tl-content">步行前往上野阿美橫町旁<strong>吉池超市 / 多慶屋</strong>：採買頂級 A5 和牛、當季山梨縣水蜜桃、高級日本酒，把 Minn 大冰箱填滿。中午就近在上野午餐</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">👘</div>
+            <div class="tl-time">下午（稍休息後）</div>
+            <div class="tl-content">戰利品放回飯店，<strong>換裝浴衣</strong>前往淺草拍照</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">⛩️</div>
+            <div class="tl-time">16:00–20:00</div>
+            <div class="tl-content"><strong>淺草雷門</strong>拍大合照，觀音寺參拜；搭<strong>水上巴士</strong>前往台場，欣賞東京灣夏日風光，看 1:1 巨大鋼彈模型，晚餐吃<strong>迴轉壽司</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 10 -->
+    <div class="day-card" data-day="10">
+      <div class="day-date-col">
+        <div class="day-dot tokyo">D10</div>
+        <div class="day-date-label">8/3</div>
+        <div class="day-date-weekday">一</div>
+      </div>
+      <div class="day-body">
+        <div class="day-header">
+          <div>
+            <div class="day-number">DAY 10</div>
+            <div class="day-title">長輩銀座購物 / 親子上野動物園 · 和牛晚宴</div>
+          </div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-transport">🚇 市內地鐵</span>
+          <span class="tag tag-stay">🏠 Minn Ueno</span>
+        </div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-icon">👔</div>
+            <div class="tl-time">上午</div>
+            <div class="tl-content"><strong>長輩線：</strong>銀座 Ginza Six · 三越百貨，頂級壽喜燒（人形町今半）或敍敍苑燒肉</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🐼</div>
+            <div class="tl-time">上午</div>
+            <div class="tl-content"><strong>親子線：</strong>上野動物園，中午就近吃拉麵或迴轉壽司</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-icon">🥩</div>
+            <div class="tl-time">晚上</div>
+            <div class="tl-content">兩隊人馬回飯店<strong>大集合</strong>：北海道 A5 和牛 + 哈密瓜家庭聚會 🎉</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Day 11 熱海 -->
+  <section class="region-section" id="day11">
+    <div class="region-header">
+      <div class="region-number">参</div>
+      <div class="region-info">
+        <div class="region-kana">ATAMI · FUJI-VIEW · FIREWORKS</div>
+        <div class="region-name">熱海一日遊</div>
+        <div class="region-dates">8月5日（三）</div>
+      </div>
+      <div class="region-badge">DAY TRIP</div>
+    </div>
+
+    <div class="day-card" data-day="11">
+      <div class="day-date-col">
+        <div class="day-dot tokyo">D11</div>
+        <div class="day-date-label">8/5</div>
+        <div class="day-date-weekday">三</div>
+      </div>
+      <div class="day-body">
+        <div class="day-header">
+          <div>
+            <div class="day-number">DAY 11</div>
+            <div class="day-title">熱海 · 十國峠 · 熱海城 · 海上花火 5,000 發</div>
+          </div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-transport">🚐 包車</span>
+          <span class="tag tag-stay">🏠 Minn Ueno</span>
+          <span class="tag tag-event">🎆 海上花火</span>
+        </div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-icon">🚐</div><div class="tl-time">10:00</div><div class="tl-content"><strong>包車出發</strong>：Minn 上野樓下接全家人，上高速公路直奔熱海</div></div>
+          <div class="tl-item"><div class="tl-icon">🍱</div><div class="tl-time">12:00–13:30</div><div class="tl-content"><strong>熱海銀座商店街午餐</strong>：昭和復古風情海鮮丼，餐後必買「熱海布丁（熱海プリン）」或草莓甜點</div></div>
+          <div class="tl-item"><div class="tl-icon">🚡</div><div class="tl-time">14:00–16:00</div><div class="tl-content"><strong>十國峠 Cable Car</strong>（短短 3 分鐘登頂）：全新 PANORAMA TERRACE，360° 無死角眺望富士山、駿河灣及伊豆群島。木棧道 + 高空長椅，長輩完全不費體力</div></div>
+          <div class="tl-item"><div class="tl-icon">🏯</div><div class="tl-time">16:30–18:00</div><div class="tl-content"><strong>熱海城 &amp; 網代灣俯瞰</strong>：頂樓觀景台吹冷氣俯瞰熱海灣；地下室免費復古遊樂場（太鼓、賽車），兼顧親子需求</div></div>
+          <div class="tl-item"><div class="tl-icon">🐟</div><div class="tl-time">18:30–20:00</div><div class="tl-content">海邊景觀餐廳<strong>海鮮晚餐</strong>：頂級新鮮伊豆名物「金目鯛煮付」</div></div>
+          <div class="tl-item"><div class="tl-icon">🎆</div><div class="tl-time">20:15–20:40</div><div class="tl-content"><strong>熱海海上花火大會（5,000 發）</strong>：走出餐廳直接在沙灘上觀賞環山海上煙火，震撼全身</div></div>
+          <div class="tl-item"><div class="tl-icon">🚐</div><div class="tl-time">21:00</div><div class="tl-content">包車尊榮返航，走高速公路回 Minn 上野（預計 <strong>22:30</strong> 抵達），長輩小孩車上安心入睡</div></div>
+        </div>
+        <div class="highlight-box">
+          🚐 <strong>包車優勢</strong>：散場時熱海車站人山人海，包車直接帶全家人從沙灘上車，長輩小孩可在車上安心入睡。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Day 12 橫濱/鎌倉 -->
+  <section class="region-section" id="day12">
+    <div class="region-header">
+      <div class="region-number">肆</div>
+      <div class="region-info">
+        <div class="region-kana">KAMAKURA · YOKOHAMA · HARBOR</div>
+        <div class="region-name">橫濱一日遊</div>
+        <div class="region-dates">8月6日（四）</div>
+      </div>
+      <div class="region-badge">DAY TRIP</div>
+    </div>
+
+    <div class="day-card" data-day="12">
+      <div class="day-date-col">
+        <div class="day-dot tokyo">D12</div>
+        <div class="day-date-label">8/6</div>
+        <div class="day-date-weekday">四</div>
+      </div>
+      <div class="day-body">
+        <div class="day-header">
+          <div>
+            <div class="day-number">DAY 12</div>
+            <div class="day-title">鎌倉大佛 · 長谷寺 · 合味道紀念館 · 橫濱港夜景</div>
+          </div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-transport">🚐 包車</span>
+          <span class="tag tag-stay">🏠 Minn Ueno</span>
+          <span class="tag tag-event">🌉 港灣夜景</span>
+        </div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-icon">🚐</div><div class="tl-time">08:30</div><div class="tl-content"><strong>包車出發</strong>：避開東京上班塞車尾巴，直奔鎌倉，高速公路車程約 1 小時 15 分鐘，長輩小孩車上補眠</div></div>
+          <div class="tl-item"><div class="tl-icon">🙏</div><div class="tl-time">10:00–11:15</div><div class="tl-content"><strong>鎌倉大佛殿高德院</strong>：趁早晨涼爽，悠閒參觀 11.3 公尺露天青銅大佛，地勢平坦長輩無負擔，可買大佛限定伴手禮</div></div>
+          <div class="tl-item"><div class="tl-icon">🌸</div><div class="tl-time">11:30–13:30</div><div class="tl-content"><strong>長谷寺（午餐與海景）</strong>：大佛旁步行 5 分鐘，欣賞觀音像與由比濱海景展望台，長谷老街享用「吻仔魚丼（しらす丼）」或日式定食</div></div>
+          <div class="tl-item"><div class="tl-icon">🚐</div><div class="tl-time">13:30–14:15</div><div class="tl-content"><strong>尊榮橫向移動（鎌倉→橫濱港未來）</strong>：走收費道路北返，車程約 40～45 分鐘，小孩睡午覺黃金時間</div></div>
+          <div class="tl-item"><div class="tl-icon">🍜</div><div class="tl-time">14:15–16:30</div><div class="tl-content"><strong>橫濱合味道紀念館</strong>：全家體驗「自製專屬杯麵」，全世界唯一的紀念品，大人小孩都超有參與感</div></div>
+          <div class="tl-item"><div class="tl-icon">🚡</div><div class="tl-time">16:45–18:30</div><div class="tl-content"><strong>YOKOHAMA AIR CABIN 空中纜車 ＆ 紅磚倉庫</strong>：傍晚黃昏搭高空冷氣纜車，從高空欣賞橫濱港點燈海景，終點下在紅磚倉庫，拍家族大合照</div></div>
+          <div class="tl-item"><div class="tl-icon">🥩</div><div class="tl-time">18:30–20:30</div><div class="tl-content"><strong>橫濱港景晚餐：28 樓敍敍苑</strong>：烤牛舌和牛，邊看大摩天輪與橫濱港灣夜景，優雅享用晚餐</div></div>
+          <div class="tl-item"><div class="tl-icon">🚐</div><div class="tl-time">20:30</div><div class="tl-content">包車直達 Minn 上野，車程約 <strong>45 分鐘</strong>，一路睡回飯店</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Day 13 高尾山/八王子 -->
+  <section class="region-section" id="day13">
+    <div class="region-header">
+      <div class="region-number">伍</div>
+      <div class="region-info">
+        <div class="region-kana">TAKAO · HACHIOJI · MATSURI</div>
+        <div class="region-name">高尾山 · 八王子祭</div>
+        <div class="region-dates">8月7日（五）</div>
+      </div>
+      <div class="region-badge">DAY TRIP</div>
+    </div>
+
+    <div class="day-card" data-day="13">
+      <div class="day-date-col">
+        <div class="day-dot tokyo">D13</div>
+        <div class="day-date-label">8/7</div>
+        <div class="day-date-weekday">五</div>
+      </div>
+      <div class="day-body">
+        <div class="day-header">
+          <div>
+            <div class="day-number">DAY 13</div>
+            <div class="day-title">高尾山藥王院 · 八王子祭山車大會師</div>
+          </div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-transport">🚐 包車</span>
+          <span class="tag tag-stay">🏠 Minn Ueno</span>
+          <span class="tag tag-event">🏮 八王子祭</span>
+        </div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-icon">🚐</div><div class="tl-time">10:00</div><div class="tl-content"><strong>包車從 Minn 上野出發</strong>前往高尾山</div></div>
+          <div class="tl-item"><div class="tl-icon">🍜</div><div class="tl-time">11:15–12:30</div><div class="tl-content">高尾山腳下享用<strong>山藥泥蕎麥麵</strong>午餐</div></div>
+          <div class="tl-item"><div class="tl-icon">🚠</div><div class="tl-time">12:30–14:40</div><div class="tl-content"><strong>搭纜車上山</strong> → 漫步古杉森林 → 參拜<strong>高尾山藥王院</strong>、吃三福糰子 → 搭纜車下山</div></div>
+          <div class="tl-item"><div class="tl-icon">☕</div><div class="tl-time">15:00–16:30</div><div class="tl-content">包車直達八王子市區，<strong>CELEO 百貨或特色茶房（日常茶飯事）</strong>：下午茶、吹冷氣、補滿長輩小孩體力</div></div>
+          <div class="tl-item"><div class="tl-icon">🥁</div><div class="tl-time">16:30–19:30</div><div class="tl-content">走出店外直接無縫接軌<strong>八王子祭山車大會師</strong>：沿街體驗 19 台山車敲擊大戰與屋台美食，熱鬧到最高點！</div></div>
+          <div class="tl-item"><div class="tl-icon">🚐</div><div class="tl-time">19:30</div><div class="tl-content">準時上包車，一路睡回上野飯店</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 14 返程 -->
+    <div class="day-card" data-day="14">
+      <div class="day-date-col">
+        <div class="day-dot return">D14</div>
+        <div class="day-date-label">8/8</div>
+        <div class="day-date-weekday">六</div>
+      </div>
+      <div class="day-body">
+        <div class="day-header">
+          <div>
+            <div class="day-number">DAY 14</div>
+            <div class="day-title">再見日本 · 返航高雄</div>
+          </div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-transport">🚐 包車送機</span>
+          <span class="tag tag-transport">✈ 虎航 返高雄 11:50</span>
+          <span class="tag tag-stay">🏠 高雄 回家</span>
+        </div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-icon">🚐</div><div class="tl-time">08:30</div><div class="tl-content"><strong>10 人座包車</strong>準時抵達 Minn 上野門口，行李上車出發</div></div>
+          <div class="tl-item"><div class="tl-icon">✈️</div><div class="tl-time">09:40</div><div class="tl-content">高速公路直達成田機場，約 1 小時 10 分鐘，順利辦理登機</div></div>
+          <div class="tl-item"><div class="tl-icon">🛫</div><div class="tl-time">11:50</div><div class="tl-content"><strong>虎航起飛</strong>，返回高雄，圓滿結束這趟東京夏日大滿貫！ 🎉</div></div>
+        </div>
+        <div class="highlight-box">
+          🌸 <strong>14 天回顧</strong>：6 場夏日祭典 · 3 場花火大會 · 2 座溫泉 · 鎌倉大佛 · 富良野薰衣草 · 日本新三大夜景 · 築地頂級美食……每一天都是滿滿的驚喜與感動。旅途愉快，回家見！
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-divider"></div>
+  <span class="footer-emoji">🌸</span>
+  <p class="footer-text">北海道 &amp; 東京 · 14 日夏旅 · 2025</p>
+</footer>
+
+<script>
+  // ── Falling petals ──
+  const container = document.getElementById('petals');
+  const icons = ['🌸','🌺','🌼','✿','❀'];
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = icons[Math.floor(Math.random() * icons.length)];
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (6 + Math.random() * 10) + 's';
+    p.style.animationDelay = (Math.random() * 12) + 's';
+    p.style.fontSize = (12 + Math.random() * 10) + 'px';
+    container.appendChild(p);
+  }
+
+  // ── Intersection Observer: fade-in day cards ──
+  const cards = document.querySelectorAll('.day-card');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  cards.forEach(c => obs.observe(c));
+
+  // ── Active nav tab on scroll ──
+  const sections = document.querySelectorAll('section[id]');
+  const tabs = document.querySelectorAll('.region-tab');
+  const navObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tabs.forEach(t => t.classList.remove('active'));
+        const tab = document.querySelector(`.region-tab[href="#${e.target.id}"]`);
+        if (tab) tab.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sections.forEach(s => navObs.observe(s));
+</script>
+</body>
+</html>
